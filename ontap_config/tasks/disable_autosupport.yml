@@ -1,0 +1,12 @@
+- name: ..... disable autosupport on "{{ item.node_name }}"
+
+  netapp.ontap.na_ontap_autosupport:
+
+    hostname: "{{ cluster_hostname }}"
+    username: "{{ cluster_username }}"
+    password: "{{ cluster_password }}"
+    https: true
+    validate_certs: false
+    
+    node_name: "{{ item.node_name }}"
+    state: absent

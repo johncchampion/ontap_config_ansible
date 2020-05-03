@@ -1,0 +1,15 @@
+- name: ..... set to 'none'
+
+  netapp.ontap.na_ontap_net_port:
+
+    hostname: "{{ cluster_hostname }}"
+    username: "{{ cluster_username }}"
+    password: "{{ cluster_password }}"
+    https: true
+    validate_certs: false
+
+    node: "{{ outerloop.node_name }}"
+    port: "{{ item }}"
+    flowcontrol_admin: none
+    
+  loop: "{{ flowcontrol_none_ports }}"

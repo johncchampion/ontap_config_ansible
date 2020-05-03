@@ -1,0 +1,438 @@
+---
+# --------------------------------------------------------------------------------------------------------------------
+# Cluster Settings
+#
+#   cluster_name: "LabCluster"
+#   cluster_hostname: 192.168.0.10                                # IP address or DNS resolvable name
+#   cluster_username: admin                                       
+#   cluster_password: "Netapp123!""                               # Modify to suit local security requirements
+#   cluster_ntp_servers: [192.168.0.253,192,168.0.254]            # Leave BLANK to skip task
+#   cluster_dns_ips: [10.0.10.2,10.0.10.3]                        # Leave BLANK to skip task
+#   cluster_search_domains: [lab.local]                           # Leave BLANK to skip task
+#
+# --------------------------------------------------------------------------------------------------------------------
+cluster_name:
+cluster_hostname: 
+cluster_username: admin
+cluster_password: 
+cluster_ntp_servers: 
+cluster_dns_ips: 
+cluster_search_domains: 
+
+# --------------------------------------------------------------------------------------------------------------------
+# Cluster Nodes
+#
+# - add one line for each node
+# - MUST have at least 1 node
+# - controls node renaming, root aggregate renaming, and service processor settings
+# - primary source for looping through node names and settings 
+# - if diskcount is blank then all unassigned disks will be assigned to that node
+# 
+#   cluster_nodes:
+#     - { node_name: LabCluster-01, new_node_name: , root_aggr: aggr0_LabCluster_01", new_root_aggr: aggr_root_01, diskcount: , sp_ip: 192.168.0.13, sp_netmask: 255.255.255.0, sp_gateway: 192.168.0.1 }
+#     - { node_name: LabCluster-02, new_node_name: , root_aggr: aggr0_LabCluster_02", new_root_aggr: aggr_root_02, diskcount: , sp_ip: 192.168.0.14, sp_netmask: 255.255.255.0, sp_gateway: 192.168.0.1 }
+#
+# --------------------------------------------------------------------------------------------------------------------
+cluster_nodes:
+
+# --------------------------------------------------------------------------------------------------------------------
+# Assign Disks
+#
+# - "diskcount:" setting in "cluster_nodes" (above) determines the number of disks assigned to each node
+# - if "diskcount" is BLANK than all unassigned disks will be assigned to that node
+#
+# --------------------------------------------------------------------------------------------------------------------
+assign_disks: false
+
+# --------------------------------------------------------------------------------------------------------------------
+# Enable High Availability (HA)
+# --------------------------------------------------------------------------------------------------------------------
+enable_ha: true
+
+# --------------------------------------------------------------------------------------------------------------------
+# Disable AutoSupport
+# --------------------------------------------------------------------------------------------------------------------
+disable_asup: false
+
+# --------------------------------------------------------------------------------------------------------------------
+# Enable CDP on all nodes
+# --------------------------------------------------------------------------------------------------------------------
+enable_cdp: false
+
+# --------------------------------------------------------------------------------------------------------------------
+# Zero Spares - Runs in the background and could take some time - potentially blocking aggregate creation until done
+# --------------------------------------------------------------------------------------------------------------------
+zero_spares: false
+
+# --------------------------------------------------------------------------------------------------------------------
+# Set Date and Time - uses the local time of the Ansible controller
+# --------------------------------------------------------------------------------------------------------------------
+# set_date_time: false
+
+# --------------------------------------------------------------------------------------------------------------------
+# Save ONTAP configuration to JSON file on Ansible controller - runs na_ontap_info at end of role
+# 
+#   The directory will be created if it does not exist - and must end with a "/"
+#
+# --------------------------------------------------------------------------------------------------------------------
+save_ontap_facts: true
+save_ontap_facts_dir: "{{ playbook_dir }}/clusterinfo/"
+
+# --------------------------------------------------------------------------------------------------------------------
+# Login Banner
+#
+#   Leave BLANK to skip task
+#
+#   This is the banner displayed AFTER a successful login and will be set for all SVMs
+#   The cluster MOTD will be displayed
+#
+# --------------------------------------------------------------------------------------------------------------------
+banner:
+
+# --------------------------------------------------------------------------------------------------------------------
+# Message of the Day
+#
+#   Leave BLANK to skip task
+#
+#   The message may contain dynamically generated content using the following escape sequences:
+#
+#   \\ - A single backlash character.
+#   \b - No output: supported for compatibility with Linux only.
+#   \C - Cluster name.
+#   \d - Current date as set on the login node.
+#   \t - Current time as set on the login node.
+#   \I - Incoming LIF IP address (prints 'console' for a console login).
+#   \l - Login device name (prints 'console' for a console login).
+#   \L - Last login for the user on any node in the cluster.
+#   \m - Machine architecture.
+#   \n - Node or data Vserver name.
+#   \N - Name of user logging in.
+#   \o - Same as \O. Provided for Linux compatibility.
+#   \O - DNS domain name of the node. Note that the output is dependent on the network configuration and may be empty.
+#   \r - Software release number.
+#   \s - Operating system name.
+#   \u - Number of active clustershell sessions on the local node. For the cluster admin: all clustershell users. For the data Vserver admin: only active sessions for that data Vserver.
+#   \U - Same as \u, but has 'user' or 'users' appended.
+#   \v - Effective cluster version string.
+#   \W - Active sessions across the cluster for the user logging in ('who').
+#
+#   A backslash followed by any other character is as entered.
+#
+#   When passing dynamic content the \ needs to be escaped in a variable (ie. \b becomes \\b)
+#    
+#   motd: "This is a restricted system subject to monitoring"
+#   motd: "Welcome \\N, today is \\d.  You are currently logged into Node/SVM; \\n.  On cluster \\C, running \\s \\r.  Your last login was \\L."
+#
+#   NOTE: You cannot insert line breaks using the API - only with the CLI
+#
+# --------------------------------------------------------------------------------------------------------------------
+motd: 
+
+# --------------------------------------------------------------------------------------------------------------------
+# Time Zone
+#
+#   Leave BLANK to skip task
+#
+#   References: 
+#
+#     Time Zones  - https://library.netapp.com/ecmdocs/ECMP1368852/html/GUID-D3B8A525-67A2-4BEE-99DB-EF52D6744B5F.html
+#     GMT offset  - https://library.netapp.com/ecmdocs/ECMP1368852/html/GUID-8715466A-B52B-4A48-8163-08D3C0014D76.html
+#     Geo Regions - https://library.netapp.com/ecmdocs/ECMP1368852/html/GUID-48AD434D-433B-4208-8D9E-C3696707E20C.html
+#
+#   tz: "America/Denver"
+#
+# --------------------------------------------------------------------------------------------------------------------
+tz: "Etc/UTC"
+
+# --------------------------------------------------------------------------------------------------------------------
+# Licenses
+#
+#   Leave BLANK to skip task BUT must include licenses for protocols being implemented
+#
+#   Comma-separated string
+#
+#   license_codes: "AAAAAAAAAAAAA,BBBBBBBBBBBBB,CCCCCCCCCCCCC"
+#
+# --------------------------------------------------------------------------------------------------------------------
+license_codes:
+
+# --------------------------------------------------------------------------------------------------------------------
+# SNMP
+#
+#   Leave BLANK to skip task
+#
+#   snmp_community_name: netapp
+#
+# --------------------------------------------------------------------------------------------------------------------
+snmp_community_name: 
+
+# --------------------------------------------------------------------------------------------------------------------
+# Ports to remove from the Default broadcast domain
+#
+#   Leave BLANK to skip task
+#
+#   remove_ports: [e0c,e0d]
+#
+# --------------------------------------------------------------------------------------------------------------------
+remove_ports: 
+
+# --------------------------------------------------------------------------------------------------------------------
+# Ports to set admin flow control to 'none'
+#
+#   Leave BLANK to skip task
+#
+#   flowcontrol_none_ports: [e0c,e0d]
+#
+# --------------------------------------------------------------------------------------------------------------------
+flowcontrol_none_ports: 
+
+# --------------------------------------------------------------------------------------------------------------------
+# FiberChannel Adapter Settings
+#
+#   Leave BLANK to skip task
+#
+#   fcp: 
+#     - { adapter_name: 0e, node_name: LabCluster-01, mode: fc, type: target }
+#
+# --------------------------------------------------------------------------------------------------------------------
+fcp:
+
+# --------------------------------------------------------------------------------------------------------------------
+# Interface Groups
+#
+#   Leave BLANK to skip task
+#
+#   ifgroups:
+#     -  { ifgroup_name: a0a, ifgroup_ports: [e0c,e0d], ifgroup_mtu: 9000 }
+#
+# --------------------------------------------------------------------------------------------------------------------
+ifgroups:
+
+# --------------------------------------------------------------------------------------------------------------------
+# VLAN ID / Port
+#
+#   Leave BLANK to skip task
+#
+#   vlans:
+#     - { vlan_id: 101, vlan_port: a0a }
+#     - { vlan_id: 102, vlan_port: a0a }
+#     - { vlan_id: 888, vlan_port: e0g }
+#
+# --------------------------------------------------------------------------------------------------------------------
+vlans:
+
+# --------------------------------------------------------------------------------------------------------------------
+# Broadcast Domains
+#
+#   Leave BLANK to skip task
+#
+#   broadcast_domains:
+#     - { bd_name: Data, bd_mtu: 9000, bd_ports: [e0c,e0d] }
+#     - { bd_name: Data2, bd_mtu: 9000, bd_ports: [a0a-101] }
+#
+# --------------------------------------------------------------------------------------------------------------------
+broadcast_domains:
+
+# --------------------------------------------------------------------------------------------------------------------
+# Aggregates
+#
+#   Leave BLANK to skip task - but you really need at least one to anything else ;)
+#
+#   aggregates:
+#     -  { aggregate_name: aggr_data1, aggregate_node: "{{ cluster_name }}-01", aggregate_disk_count: 11, aggregate_raid_size: 11, aggregate_raid_type: raid_dp, mirrored: false }
+#     -  { aggregate_name: aggr_data2, aggregate_node: "{{ cluster_name }}-02", aggregate_disk_count: 11, aggregate_raid_size: 11, aggregate_raid_type: raid_dp, mirrored: false }
+#
+# --------------------------------------------------------------------------------------------------------------------
+aggregates:
+
+# --------------------------------------------------------------------------------------------------------------------
+# Storage Virtual Machines (SVM / vServer)
+#
+#   Leave BLANK to skip task - but you really need at least one to anything else ;)
+#
+#   svms:
+#     - { svm_name: svmData, svm_aggregate: aggr_data1, svm_root_vol: svmData_root, svm_protocol: iscsi } 
+#     - { svm_name: svmNFS,  svm_aggregate: aggr_data2, svm_root_vol: svmNFS_root,  svm_protocol: nfs }
+#     - { svm_name: svmCIFS, svm_aggregate: aggr_data1, svm_root_vol: svmCIFS_root, svm_protocol: cifs }
+#     - { svm_name: svmNAS,  svm_aggregate: aggr_data2, svm_root_vol: svmNAS_root,  svm_protocol: 'cifs,nfs'}
+#     - { svm_name: svmSAN,  svm_aggregate: aggr_data1, svm_root_vol: svmSAN_root,  svm_protocol: 'iscsi,fcp' } 
+#
+# --------------------------------------------------------------------------------------------------------------------
+svms:
+
+# --------------------------------------------------------------------------------------------------------------------
+# SVM DNS Settings
+#
+#   Leave BLANK to skip task
+#
+#   svm_dns:
+#     - { svm_name: svmCIFS, dns_domains: lab.local, dns_nameservers: 172.32.0.40 }
+#
+# --------------------------------------------------------------------------------------------------------------------
+svm_dns:
+
+# --------------------------------------------------------------------------------------------------------------------
+# CIFS Active Directory Domain
+#
+#   Leave BLANK to skip task
+#
+#   cifs_domain:
+#     - { svm_name: svmCIFS, domain: lab.local, cifs_server_name: svrCIFS, force: true, domain_admin_username: administrator, domain_admin_password: 'Netapp123!', ou: }
+#
+# --------------------------------------------------------------------------------------------------------------------
+cifs_ad_domain:
+
+# --------------------------------------------------------------------------------------------------------------------
+# Intercluster LIFs
+#
+#   Leave BLANK to skip task
+#
+#   If used, the system requires at least 1 LIF on EVERY node in the cluster
+# 
+#   ic_lifs:
+#     - { ic_name: intercluster_1, address: 10.0.10.245, netmask: 255.255.255.0, home_node: "{{ cluster_name }}-01", home_port: e0a }
+#     - { ic_name: intercluster_2, address: 10.0.10.246, netmask: 255.255.255.0, home_node: "{{ cluster_name }}-02", home_port: e0a }
+#
+# --------------------------------------------------------------------------------------------------------------------
+ic_lifs:
+
+# --------------------------------------------------------------------------------------------------------------------
+# Logical Interfaces
+#
+#   Leave BLANK to skip task - but you really need at least one to access data ;)
+#
+#   lifs:
+#     - { lif_name: lif_svmData_iscsi_1, svm_name: svmData, home_node: "{{ cluster_name }}-01", home_port: "e0c", protocol: iscsi, address: 192.168.0.24, netmask: 255.255.255.0 }
+#     - { lif_name: lif_svmData_iscsi_2, svm_name: svmData, home_node: "{{ cluster_name }}-01", home_port: "e0d", protocol: iscsi, address: 192.168.0.26, netmask: 255.255.255.0 }
+#     - { lif_name: lif_svmData_iscsi_3, svm_name: svmData, home_node: "{{ cluster_name }}-02", home_port: "e0c", protocol: iscsi, address: 192.168.0.25, netmask: 255.255.255.0 }
+#     - { lif_name: lif_svmData_iscsi_4, svm_name: svmData, home_node: "{{ cluster_name }}-02", home_port: "e0d", protocol: iscsi, address: 192.168.0.27, netmask: 255.255.255.0 }
+#
+#     - { lif_name: lif_svmNFS_lif_1, svm_name: svmNFS, home_node: "{{ cluster_name }}-01", home_port: "e0c", protocol: nfs, address: 192.168.0.28, netmask: 255.255.255.0 }
+#     - { lif_name: lif_svmCIFS_lif_1, svm_name: svmCIFS, home_node: "{{ cluster_name }}-02", home_port: "e0d", protocol: nfs, address: 192.168.0.29, netmask: 255.255.255.0 }
+#
+# --------------------------------------------------------------------------------------------------------------------
+lifs:
+
+# --------------------------------------------------------------------------------------------------------------------
+# Routes
+#
+#   Leave BLANK to skip task
+#
+#   routes:
+#     - { svm_name: svmData, destination: "0.0.0.0/0", gateway: 10.0.10.1, metric: 20 }
+#
+# --------------------------------------------------------------------------------------------------------------------
+routes:
+
+# --------------------------------------------------------------------------------------------------------------------
+# Job Schedules
+#
+#   Leave BLANK to skip task
+#
+#   job_schedules:
+#     - { job_name: dedupe_0100, job_hours: 01, job_minutes: 00 }
+#     - { job_name: dedupe_0200, job_hours: 02, job_minutes: 00 }
+#
+# --------------------------------------------------------------------------------------------------------------------
+job_schedules:
+
+# --------------------------------------------------------------------------------------------------------------------
+# Efficiency Policies
+#
+#   Leave BLANK to skip task
+#
+#   efficiency_policies:
+#   - { policy_name: ep_dedupe_0100, type: scheduled, schedule: dedupe_0100, qos_policy: background }
+#   - { policy_name: ep_dedupe_0200, type: scheduled, schedule: dedupe_0200, qos_policy: background }
+#
+# --------------------------------------------------------------------------------------------------------------------
+efficiency_policies:
+
+# --------------------------------------------------------------------------------------------------------------------
+# Initiators 
+#
+# - comma-separated string
+# - only used if adding multiple IQNs/WWNs to a single iGroup
+# - not required / make as many as you need (i.e. initiators1, initiators2,...)
+#
+#   initiators: "iqn.1998-01.com.vmware:esxi1-325f37e2,iqn.1998-01.com.vmware:esxi2-10e5f810"
+#
+# --------------------------------------------------------------------------------------------------------------------
+initiators:
+
+# --------------------------------------------------------------------------------------------------------------------
+# iGroups
+#
+#   Leave BLANK to skip task
+#
+#   Provide a single initiator or create a variable (see above) to create a list of initiators 
+#
+#   igroups:
+#     - { igroup_name: esx1, svm_name: svmData, group_type: iscsi, ostype: vmware, initiator: "iqn.1998-01.com.vmware:esxi1-325f37e2" }
+#     - { igroup_name: esx_servers, svm_name: svmData, group_type: iscsi, ostype: vmware, initiator: "{{ initiators }}" }
+#
+# --------------------------------------------------------------------------------------------------------------------
+igroups:
+
+# --------------------------------------------------------------------------------------------------------------------
+# NAS Volumes
+#
+#   Leave BLANK to skip task
+#
+#   NFS Only
+#   --------
+#   volumes_nas:
+#     - { volume_name: vol_nfs1, size: 1, size_unit: tb, aggregate_name: aggr_data1, protocol: nfs, export_policy_name: nfs_share, svm_name: svmData2, client: 192.168.1.0/24, ro: sys, rw: sys, su: sys, policy: default }
+#     - { volume_name: vol_nfs2, size: 2, size_unit: tb, aggregate_name: aggr_data2, protocol: nfs, export_policy_name: nfs_share, svm_name: svmData2, client: 192.168.1.0/24, ro: sys, rw: sys, su: sys, policy: default }
+#
+#   CIFS Only
+#   ---------
+#   volumes_nas:
+#     - { volume_name: vol_cifs1, size: 300, size_unit: gb, aggregate_name: aggr_data1, protocol: cifs, share: cifs_share1 }
+#
+#   NFS & CIFS
+#   ----------
+#   volumes_nas:
+#     - { volume_name: vol_nfs_cifs, size: 100, size_unit: gb, aggregate_name: aggr_data1, protocol: nfs, export_policy_name: nfs_share, svm_name: svmData2, client: 192.168.1.0/24, ro: sys, rw: sys, su: sys, policy: default, share: cifs_share }
+#
+# --------------------------------------------------------------------------------------------------------------------
+volumes_nas:
+
+# --------------------------------------------------------------------------------------------------------------------
+# SAN Volumes
+#
+#   Leave BLANK to skip task
+#
+#   volumes_san:
+#     - { volume_name: "vol_vms", svm_name: "svmData", size: 1, size_unit: tb, aggregate_name: "aggrData", policy: default }
+#
+# --------------------------------------------------------------------------------------------------------------------
+volumes_san:
+
+# --------------------------------------------------------------------------------------------------------------------
+# SAN LUNs
+#
+#   Leave BLANK to skip task
+#
+#   luns_san:
+#     - { lun_name: "lun_vms", lunid: 1, volume_name: "vol_vms", svm_name: "svmData", size: 1, size_unit: tb, ostype: vmware, igroup: esx_servers }
+#
+# --------------------------------------------------------------------------------------------------------------------
+luns_san:
+
+# --------------------------------------------------------------------------------------------------------------------
+# Load Sharing Mirrors
+#
+#   Leave BLANK to skip task
+#
+#   Note: lsupdate: "Y" will cause 'initialize' and 'ls-update' commands to be executed on the LS mirror. This is necessary when having multiple LS mirrors on a single SVM.
+#
+#   ls_mirrors:
+#     - { source_volume: svmData_root, size: 1, size_unit: gb, source_svm_name: svmData, destination_volume: svmData_root_LS, destination_svm_name: svmData, destination_aggregate_name: svmData, schedule: "5min", lsupdate: "N" }
+#
+# --------------------------------------------------------------------------------------------------------------------
+ls_mirrors:
+
+# --------------------------------------------------------------------------------------------------------------------
+# END
+# --------------------------------------------------------------------------------------------------------------------

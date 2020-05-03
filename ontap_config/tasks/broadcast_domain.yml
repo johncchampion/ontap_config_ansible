@@ -1,0 +1,33 @@
+- name: ..... clear ports list 
+
+  set_fact:
+    ports_list: ""
+
+- name: ..... build ports list (node:port)
+
+  set_fact:
+    ports_list: "{{ ports_list + item.0.node_name + ':' + item.1 + ',' }}"
+
+  with_nested:
+    - "{{ cluster_nodes }}"
+    - "{{ outerloop.bd_ports }}"
+
+- name: ..... format ports list
+
+  set_fact:
+    ports_list: "{{ ports_list | regex_replace(',$', '') }}"
+
+- name: ..... create broadcast domain "{{ outerloop.bd_name }}"
+
+  netapp.ontap.na_ontap_broadcast_domain:
+
+    hostname: "{{ cluster_hostname }}"
+    username: "{{ cluster_username }}"
+    password: "{{ cluster_password }}"
+    https: true
+    validate_certs: false 
+    
+    broadcast_domain: "{{ outerloop.bd_name }}"
+    mtu: "{{ outerloop.bd_mtu }}"
+    state: present
+    ports: "{{ ports_list }}"

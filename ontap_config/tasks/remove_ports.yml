@@ -1,0 +1,15 @@
+- name: ..... node {{ outerloop.node_name }}"
+
+  netapp.ontap.na_ontap_broadcast_domain_ports:
+
+    hostname: "{{ cluster_hostname }}"
+    username: "{{ cluster_username }}"
+    password: "{{ cluster_password }}"
+    https: true
+    validate_certs: false
+
+    broadcast_domain: Default
+    ports: "{{ outerloop.node_name }}:{{ item }}"
+    state: absent
+
+  loop: "{{ remove_ports }}"

@@ -1,0 +1,15 @@
+{% set tb_bytes = 1099511627776 %}
+{% set gb_bytes = 1073741824 %}
+{% set mb_bytes = 1048576 %}
+
+{% if (item.size_unit | lower) == "tb" %}
+   {% set temp_size = (item.size * tb_bytes) %}
+{% elif (item.size_unit | lower) == "gb" %}
+   {% set temp_size = (item.size * gb_bytes) %}
+{% elif (item.size_unit | lower) == "mb" %}
+   {% set temp_size = (item.size * mb_bytes) %}
+{% else %}
+   {% set temp_size = 0 %}
+{% endif %}
+
+{{ temp_size }}

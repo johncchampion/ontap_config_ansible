@@ -1,0 +1,319 @@
+---
+##################################################################################################################
+
+- name: O N T A P  I N F O
+  include_tasks: ontap_info.yml
+
+##################################################################################################################
+
+- name: S E R V I C E  P R O C E S S O R S
+  include_tasks: service_processor.yml
+  with_items: "{{ cluster_nodes }}"
+  loop_control:
+    label: "{{ item.node_name }}"
+  when:
+    - item.sp_ip != none
+    - item.sp_netmask != none
+
+##################################################################################################################
+
+- name: A S S I G N  D I S K S
+  include_tasks: assign_disks.yml
+  with_items: "{{ cluster_nodes }}"
+  loop_control:
+    label: "{{ item.node_name }}"
+  when:
+    - assign_disks
+    
+##################################################################################################################
+
+- name: E N A B L E  C L U S T E R  H A 
+  include_tasks: ha_enable.yml
+  when:
+    - enable_ha
+
+##################################################################################################################
+
+- name: D I S A B L E  A U T O S U P P O R T
+  include_tasks: disable_autosupport.yml
+  with_items: "{{ cluster_nodes }}"
+  loop_control:
+    label: "{{ item.node_name }}"
+  when:
+    - disable_asup
+
+##################################################################################################################
+
+- name: E N A B L E  C D P
+  include_tasks: enable_cdp.yml
+  when:
+    - enable_cdp
+
+##################################################################################################################
+
+- name: Z E R O  S P A R E S
+  include_tasks: zero_spares.yml
+  when:
+    - zero_spares
+
+##################################################################################################################
+
+- name: L I C E N S E S
+  include_tasks: licenses.yml
+  when:
+    - license_codes != none
+
+##################################################################################################################
+
+- name: L O G I N  B A N N E R - C L U S T E R
+  include_tasks: loginbanner.yml
+  vars:
+    vserver_name: "{{ cluster_name }}"
+    userest: "Never"
+  when:
+    - banner != none
+
+##################################################################################################################
+
+- name: M E S S A G E  O F  T H E  D A Y - C L U S T E R
+  include_tasks: motd.yml
+  vars:
+    vserver_name: "{{ cluster_name }}"
+  when:
+    - motd != none
+
+##################################################################################################################
+
+- name: T I M E  Z O N E
+  include_tasks: timezone.yml
+  when:
+    - tz != none
+
+##################################################################################################################
+
+#- name: D A T E  &  T I M E
+#  include_tasks: datetime.yml
+#  when: 
+#    - set_date_time
+
+##################################################################################################################
+
+- name: N T P
+  include_tasks: ntp.yml
+  with_items: "{{ cluster_ntp_servers }}"
+  loop_control:
+    label: "{{ item }}"
+  when:
+    - cluster_ntp_servers != none
+
+##################################################################################################################
+
+- name: C L U S T E R  -  D N S  S E T T I N G S
+  include_tasks: dns.yml
+  vars:
+    vserver_name: "{{ cluster_name }}"
+    nameservers_list: "{{ cluster_dns_ips }}"
+    domains_list: "{{ cluster_search_domains }}"
+  when:
+    - cluster_dns_ips != none
+    - cluster_search_domains != none
+
+##################################################################################################################
+
+- name: S N M P  C O M M U N I T Y
+  include_tasks: snmp.yml
+  when:
+    - snmp_community_name != none
+
+##################################################################################################################
+
+- name: R E M O V E  P O R T S  F R O M  D E F A U L T  B R O A D C A S T  D O M A I N
+  include_tasks: remove_ports.yml
+  with_items: "{{ cluster_nodes }}"
+  loop_control:
+    loop_var: outerloop
+  when: 
+    - remove_ports != none
+
+##################################################################################################################
+
+- name: F L O W C O N T R O L  S E T  T O  'NONE'
+  include_tasks: flowcontrolnone.yml
+  with_items: "{{ cluster_nodes }}"
+  loop_control:
+    loop_var: outerloop
+  when:
+    - flowcontrol_none_ports != none
+
+##################################################################################################################
+
+- name: E F F I C I E N C Y  P O L I C I E S  &  S C H E D U L E S
+  include_tasks: efficiency_policies_schedules.yml
+  when:
+    - efficiency_policies != none
+
+##################################################################################################################
+
+- name: I N T E R F A C E  G R O U P S
+  include_tasks: ifgrps.yml
+  with_items: "{{ cluster_nodes }}"
+  loop_control:
+    loop_var: outerloop
+  when:
+    - ifgroups != none
+
+##################################################################################################################
+
+- name: A D D  V L A N S
+  include_tasks: vlans.yml
+  with_items: "{{ cluster_nodes }}"
+  loop_control:
+    loop_var: outerloop
+  when: 
+    - vlans != none
+
+##################################################################################################################
+
+- name: C R E A T E  B R O A D C A S T  D O M A I N S
+  include_tasks: broadcast_domain.yml
+  with_items: "{{ broadcast_domains }}"
+  loop_control:
+    loop_var: outerloop
+  when: 
+    - broadcast_domains != none
+
+##################################################################################################################
+
+- name: C R E A T E  A G G R E G A T E S
+  include_tasks: aggregate.yml
+  with_items: "{{ aggregates }}"
+  when: 
+    - aggregates != none
+
+##################################################################################################################
+
+- name: C R E A T E  S V M S
+  include_tasks: svm.yml
+  with_items: "{{ svms }}"
+  when:
+    - svms != none
+
+##################################################################################################################
+
+- name: L O G I N  B A N N E R - S V M s
+  include_tasks: loginbanner.yml
+  vars:
+    vserver_name: "{{ item.svm_name }}"
+    userest: "Auto"
+  with_items: "{{ svms }}"
+  when:
+    - banner != none
+
+##################################################################################################################
+
+- name: S V M  -  D N S  S E T T I N G S
+  include_tasks: dns.yml
+  vars:
+    vserver_name: "{{ item.svm_name }}"
+    nameservers_list: "{{ item.dns_nameservers }}"
+    domains_list: "{{ item.dns_domains }}"
+  with_items: "{{ svm_dns }}"
+  when:
+    - svm_dns != none
+
+##################################################################################################################
+
+- name: I N T E R C L U S T E R  L I F S
+  include_tasks: interclusterlif.yml
+  with_items: "{{ ic_lifs }}"
+  when:
+    - ic_lifs != none
+
+##################################################################################################################
+
+- name: L O G I C A L  I N T E R F A C E S
+  include_tasks: lif.yml
+  with_items: "{{ lifs }}"
+  when:
+    - lifs != none
+
+##################################################################################################################
+
+- name: C I F S  S E R V E R S
+  include_tasks: cifs_server.yml
+  with_items: "{{ cifs_servers }}"
+  when: cifs_servers != none
+
+##################################################################################################################
+
+- name: C R E A T E  N A S  V O L U M E S
+  include_tasks: volume_nas.yml
+  with_items: "{{ volumes_nas }}"
+  when:
+    - volumes_nas != none
+
+##################################################################################################################
+
+- name: C R E A T E  I G R O U P S
+  include_tasks: igroup.yml
+  with_items: "{{ igroups }}"
+  when:
+    - igroups != none
+
+##################################################################################################################
+
+- name: C R E A T E  S A N  V O L U M E S
+  include_tasks: volume_san.yml
+  with_items: "{{ volumes_san }}"
+  when:
+    - volumes_san != none
+
+##################################################################################################################
+
+- name: C R E A T E  S A N  L U N S
+  include_tasks: lun.yml
+  with_items: "{{ luns_san }}"
+  when:
+    - luns_san != none
+
+##################################################################################################################
+
+- name: R E N A M E  N O D E S
+  include_tasks: rename_node.yml
+  with_items: "{{ cluster_nodes }}"
+  loop_control:
+    label: "{{ item.node_name }}"
+  when: 
+    - item.new_node_name != none
+    - item.new_node_name != item.node_name
+    - item.node_name in ( node_list | map(attribute='node_name') )
+
+##################################################################################################################
+
+- name: R E N A M E  R O O T  A G G R E G A T E S
+  include_tasks: rename_root_aggr.yml
+  with_items: "{{ cluster_nodes }}"
+  loop_control:
+    label: "{{ item.root_aggr }}"
+  when:
+    - item.root_aggr != none
+    - item.new_root_aggr != none
+    - item.new_root_aggr != item.root_aggr
+    - item.root_aggr in ( root_aggr_list | map(attribute='root_aggr') )
+
+##################################################################################################################
+
+- name: L S  M I R R O R S
+  include_tasks: lsmirror.yml
+  with_items: "{{ ls_mirrors }}"
+  when:
+    - ls_mirrors != none
+
+##################################################################################################################
+
+- name: S A V E  O N T A P  I N F O
+  include_tasks: save_ontap_info.yml
+  when: 
+    - save_ontap_facts
+
+##################################################################################################################

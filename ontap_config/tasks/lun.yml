@@ -1,0 +1,46 @@
+- name: ..... store LUN path
+
+  set_fact:
+    current_lun_path:  "{{ item.svm_name }}:/vol/{{ item.volume_name }}/{{ item.lun_name }}"
+
+- name: ..... create LUN "{{ item.lun_name }}"
+
+  na_ontap_lun:
+
+    hostname: "{{ cluster_hostname }}"
+    username: "{{ cluster_username }}"
+    password: "{{ cluster_password }}"
+    https: true
+    validate_certs: false
+
+    state: present
+    name: "{{ item.lun_name }}"
+    flexvol_name: "{{ item.volume_name }}"
+    vserver: "{{ item.svm_name }}"
+    size: "{{ lookup('template', 'convert2bytes.j2')  | int }}"
+    size_unit: b
+    ostype: "{{ item.ostype }}"
+    space_reserve: false
+    space_allocation: true
+
+  when:
+    - current_lun_path not in ( lun_list | map(attribute='lun_path') )
+
+- name: ..... map LUN "{{ item.lun_name }}"
+
+  na_ontap_lun_map:
+
+    hostname: "{{ cluster_hostname }}"
+    username: "{{ cluster_username }}"
+    password: "{{ cluster_password }}"
+    https: true
+    validate_certs: false
+
+    state: present
+    initiator_group_name: "{{ item.igroup }}"
+    path: "/vol/{{ item.volume_name }}/{{ item.lun_name }}"
+    lun_id: "{{ item.lunid | default(omit) }}"
+    vserver: "{{ item.svm_name }}"
+
+  when:
+    - current_lun_path not in ( lun_list | map(attribute='lun_path') )

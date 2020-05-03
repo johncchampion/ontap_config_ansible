@@ -1,0 +1,11 @@
+- name: ..... set cdpd.enable on
+
+  netapp.ontap.na_ontap_command:
+
+    hostname: "{{ cluster_hostname }}"
+    username: "{{ cluster_username }}"
+    password: "{{ cluster_password }}"
+    https: true
+    validate_certs: false
+
+    command: ['node', 'run', '-node', '*', 'options', 'cdpd.enable', 'on']

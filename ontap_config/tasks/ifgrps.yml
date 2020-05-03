@@ -1,0 +1,37 @@
+- name: ..... create interface group
+
+  netapp.ontap.na_ontap_net_ifgrp:
+
+    hostname: "{{ cluster_hostname }}"
+    username: "{{ cluster_username }}"
+    password: "{{ cluster_password }}"
+    https: true
+    validate_certs: false
+
+    node: "{{ outerloop.node_name }}"
+    name: "{{ item.ifgroup_name }}"
+    ports: "{{ item.ifgroup_ports }}"
+    state: present
+    mode: multimode_lacp
+    distribution_function: port
+
+  loop: "{{ ifgroups }}"
+
+- name: ..... set MTU
+
+  netapp.ontap.na_ontap_net_port:
+
+    hostname: "{{ cluster_hostname }}"
+    username: "{{ cluster_username }}"
+    password: "{{ cluster_password }}"
+    https: true
+    validate_certs: false
+
+    node: "{{ outerloop.node_name }}"
+    ports: "{{ item.ifgroup_name }}"
+    mtu: "{{ item.ifgroup_mtu }}"
+
+  loop: "{{ ifgroups }}"
+
+  when:
+    - item.ifgroup_mtu != none

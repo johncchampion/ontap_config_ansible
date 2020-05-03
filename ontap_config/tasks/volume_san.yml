@@ -1,0 +1,19 @@
+- name: ..... create volume "{{ item.volume_name }}"
+
+  na_ontap_volume:
+
+    hostname: "{{ cluster_hostname }}"
+    username: "{{ cluster_username }}"
+    password: "{{ cluster_password }}"
+    https: true
+    validate_certs: false
+
+    state: present
+    name: "{{ item.volume_name }}"
+    aggregate_name: "{{ item.aggregate_name }}"
+    size: "{{ (lookup('template', 'convert2bytes.j2') | int * 1.05) | round(0, 'ceil') | int }}"
+    size_unit: b
+    space_guarantee: none
+    percent_snapshot_space: 0
+    vserver: "{{ item.svm_name }}"
+    efficiency_policy: "{{ omit if item.policy.lower() is search('default') else item.policy }}"

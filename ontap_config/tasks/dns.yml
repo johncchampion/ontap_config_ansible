@@ -1,0 +1,15 @@
+- name: ... configure DNS - {{ vserver_name }}
+
+  netapp.ontap.na_ontap_dns:
+
+    hostname: "{{ cluster_hostname }}"
+    username: "{{ cluster_username }}"
+    password: "{{ cluster_password }}"
+    https: true
+    validate_certs: false
+    
+    vserver: "{{ vserver_name }}"
+    nameservers: "{{ nameservers_list }}"
+    domains: "{{ domains_list }}"
+    state: present
+    use_rest: Never

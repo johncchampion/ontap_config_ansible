@@ -1,0 +1,18 @@
+---
+# --------------------------------------------------------------------------
+#
+# Pass vars_files filename from the command line:
+#
+#    Example: ansible-playbook pb_ontap_config.yml -e "@vars_ontap_select.yml"
+#
+# --------------------------------------------------------------------------
+- hosts: localhost
+  connection: local
+  gather_facts: no
+  collections:
+    - netapp.ontap
+
+  tasks:
+
+  - include_role:
+      name: ontap_config

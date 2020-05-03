@@ -1,0 +1,39 @@
+- name: ..... collect ONTAP Info
+
+  netapp.ontap.na_ontap_info:
+
+    hostname: "{{ cluster_hostname }}"
+    username: "{{ cluster_username }}"
+    password: "{{ cluster_password }}"
+    https: true
+    validate_certs: false
+    state: info
+    
+  register: details
+
+- name: ..... retrieve cluster name
+
+  set_fact:
+    current_cluster_name: "{{ details.ontap_info.vserver_info[item].vserver_name }}"
+  with_items: "{{ details.ontap_info.vserver_info }}"
+  when: details.ontap_info.vserver_info[item].vserver_type == "admin"
+
+- name: ..... retrieve node names
+
+  set_fact:
+    node_list: "{{ node_list | default([]) + [ {'node_name': item} ] }}"
+  with_items: "{{ details.ontap_info.cluster_node_info }}"
+
+- name: ..... retrieve root aggregate names
+
+  set_fact: 
+    root_aggr_list: "{{ root_aggr_list | default([]) + [ {'root_aggr': item, 'node_name': details.ontap_info.aggregate_info[item].aggr_ownership_attributes.owner_name} ] }}"
+  with_items: "{{ details.ontap_info.aggregate_info }}"
+
+  when: details.ontap_info.aggregate_info[item].aggr_raid_attributes.has_local_root == "true"
+
+- name: ..... retrieve LUNs
+
+  set_fact: 
+    lun_list: "{{ lun_list | default([]) + [ { 'lun_path': item} ] }}"
+  with_items: "{{ details.ontap_info.lun_info }}"
