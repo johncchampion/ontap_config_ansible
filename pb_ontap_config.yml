@@ -1,7 +1,7 @@
 ---
 # --------------------------------------------------------------------------
 #
-# Pass vars_files filename from the command line:
+# Pass vars filename from the command line:
 #
 #    Example: ansible-playbook pb_ontap_config.yml -e "@vars_ontap_select.yml"
 #
