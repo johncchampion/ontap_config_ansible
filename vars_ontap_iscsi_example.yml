@@ -1,0 +1,59 @@
+---
+cluster_name: "fascluster1"
+cluster_hostname: "10.0.10.13"
+cluster_username: admin
+cluster_password: "Netapp123!"
+cluster_ntp_servers: [10.0.10.253]
+cluster_dns_ips: [10.0.10.8]
+cluster_search_domains: [netapp.local]
+cluster_nodes:
+  - { node_name: "{{ cluster_name }}-01", new_node_name: , root_aggr: "aggr0_{{ cluster_name }}_01", new_root_aggr: aggr_root_01, diskcount: , sp_ip: 10.0.10.24, sp_netmask: 255.255.255.0, sp_gateway: 10.0.10.1 }
+  - { node_name: "{{ cluster_name }}-02", new_node_name: , root_aggr: "aggr0_{{ cluster_name }}_02", new_root_aggr: aggr_root_02, diskcount: , sp_ip: 10.0.10.25, sp_netmask: 255.255.255.0, sp_gateway: 10.0.10.1 }
+disable_asup: true
+enable_cdp: true
+zero_spares: true
+save_ontap_facts: true
+save_ontap_facts_dir: "{{ playbook_dir }}/clusterinfo/"
+banner: "You are accessing a U.S. Government (USG) Information System (IS) that is provided for USG-authorized use only. By using this IS (which includes any device attached to this IS), you consent to the following conditions: -The USG routinely intercepts and monitors communications on this IS for purposes including, but not limited to, penetration testing, COMSEC monitoring, network operations and defense, personnel misconduct (PM), law enforcement (LE), and counterintelligence (CI) investigations. -At any time, the USG may inspect and seize data stored on this IS. -Communications using, or data stored on, this IS are not private, are subject to routine monitoring, interception, and search, and may be disclosed or used for any USG-authorized purpose. -This IS includes security measures (e.g., authentication and access controls) to protect USG interests--not for your personal benefit or privacy. -Notwithstanding the above, using this IS does not constitute consent to PM, LE or CI investigative searching or monitoring of the content of privileged communications, or work product, related to personal representation or services by attorneys, psychotherapists, or clergy, and their assistants. Such communications and work product are private and confidential. See User Agreement for details."
+motd: "\\v"
+tz: "Etc/UTC"
+license_codes: "AAAAAAAAAAAAAAAAAAAAAAAAAAAA,BBBBBBBBBBBBBBBBBBBBBBBBBBBB,CCCCCCCCCCCCCCCCCCCCCCCCCCCC,DDDDDDDDDDDDDDDDDDDDDDDDDDDD,EEEEEEEEEEEEEEEEEEEEEEEEEEEE"
+remove_ports: [e0c,e0d]
+flowcontrol_none_ports: [e0c,e0d]
+broadcast_domains:
+  - { bd_name: Data, bd_mtu: 9000, bd_ports: [e0c,e0d] }
+aggregates:
+  -  { aggregate_name: aggr_data1, aggregate_node: "{{ cluster_name }}-01", aggregate_disk_count: 11, aggregate_raid_size: 11, aggregate_raid_type: raid_dp, mirrored: false }
+  -  { aggregate_name: aggr_data2, aggregate_node: "{{ cluster_name }}-02", aggregate_disk_count: 11, aggregate_raid_size: 11, aggregate_raid_type: raid_dp, mirrored: false }
+svms:
+  - { svm_name: svmData, svm_aggregate: aggr_data1, svm_root_vol: "svmData_root", svm_protocol: iscsi } 
+lifs:
+  - { lif_name: lif_svmData_iscsi_1, svm_name: svmData, home_node: "{{ cluster_name }}-01", home_port: "e0c", protocol: iscsi, address: 192.168.0.24, netmask: 255.255.255.0 }
+  - { lif_name: lif_svmData_iscsi_2, svm_name: svmData, home_node: "{{ cluster_name }}-01", home_port: "e0d", protocol: iscsi, address: 192.168.0.26, netmask: 255.255.255.0 }
+  - { lif_name: lif_svmData_iscsi_3, svm_name: svmData, home_node: "{{ cluster_name }}-02", home_port: "e0c", protocol: iscsi, address: 192.168.0.25, netmask: 255.255.255.0 }
+  - { lif_name: lif_svmData_iscsi_4, svm_name: svmData, home_node: "{{ cluster_name }}-02", home_port: "e0d", protocol: iscsi, address: 192.168.0.27, netmask: 255.255.255.0 }
+routes:
+  - { svm_name: svmData, destination: "0.0.0.0/0", gateway: 10.0.10.1, metric: 20 }
+job_schedules:
+  - { job_name: dedupe_0100, job_hours: 01, job_minutes: 00 }
+  - { job_name: dedupe_0200, job_hours: 02, job_minutes: 00 }
+efficiency_policies:
+  - { policy_name: ep_dedupe_0100, type: scheduled, schedule: dedupe_0100, qos_policy: background }
+  - { policy_name: ep_dedupe_0200, type: scheduled, schedule: dedupe_0200, qos_policy: background }
+initiators: "iqn.1998-01.com.vmware:esxi1-325f37e2,iqn.1998-01.com.vmware:esxi2-10e5f810"
+igroups:
+  - { igroup_name: esx_servers, svm_name: svmData, group_type: iscsi, ostype: vmware, initiator: "{{ initiators }}" }
+volumes_san:
+  - { volume_name: vol_vms,    svm_name: svmData, size: 1, size_unit: tb, aggregate_name: aggr_data1, policy: default }
+  - { volume_name: vol_ONTAP1, svm_name: svmData, size: 3, size_unit: tb, aggregate_name: aggr_data1, policy: default }
+  - { volume_name: vol_ONTAP2, svm_name: svmData, size: 3, size_unit: tb, aggregate_name: aggr_data2, policy: default }
+  - { volume_name: vol_ONTAP3, svm_name: svmData, size: 3, size_unit: tb, aggregate_name: aggr_data1, policy: default }
+  - { volume_name: vol_ONTAP4, svm_name: svmData, size: 3, size_unit: tb, aggregate_name: aggr_data2, policy: default }
+luns_san:
+  - { lun_name: "lun_vms", lunid: 0, volume_name: "vol_vms", svm_name: "svmData", size: 1, size_unit: tb, ostype: vmware, igroup: esx_servers }
+  - { lun_name: "lun_ONTAP1", lunid: 1, volume_name: "vol_ONTAP1", svm_name: "svmData", size: 1, size_unit: tb, ostype: vmware, igroup: esx_servers }
+  - { lun_name: "lun_ONTAP2", lunid: 2, volume_name: "vol_ONTAP2", svm_name: "svmData", size: 3, size_unit: tb, ostype: vmware, igroup: esx_servers }
+  - { lun_name: "lun_ONTAP3", lunid: 3, volume_name: "vol_ONTAP3", svm_name: "svmData", size: 3, size_unit: tb, ostype: vmware, igroup: esx_servers }
+  - { lun_name: "lun_ONTAP4", lunid: 4, volume_name: "vol_ONTAP4", svm_name: "svmData", size: 3, size_unit: tb, ostype: vmware, igroup: esx_servers }
+ls_mirrors:
+  - { source_volume: "svmData_root", size: 1, size_unit: gb, source_svm_name: "svmData", destination_volume: "svmData_root_LS", destination_svm_name: "svmData", destination_aggregate_name: "aggr_data1", schedule: "5min", lsupdate: "N" }
