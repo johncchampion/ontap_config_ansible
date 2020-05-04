@@ -78,14 +78,16 @@ Roles include:
 35. Save configuration to file (save_ontap_info.yml)
 
 ### Example Playbook
-> - hosts: localhost
->   connection: local
->   gather_facts: no
->   collections:
->     - netapp.ontap
->   tasks:
->   - include_role:
->       name: ontap_config
+<pre>
+- hosts: localhost
+  connection: local
+  gather_facts: no
+  collections:
+    - netapp.ontap
+  tasks:
+  - include_role:
+      name: ontap_config
+</pre>
 
 To pass a vars file to the playbook:
 
