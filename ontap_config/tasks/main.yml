@@ -270,7 +270,7 @@
 
 ##################################################################################################################
 
-- name: C R E A T E  S A N  L U N S
+- name: C R E A T E  &  M A P  S A N  L U N S
   include_tasks: lun.yml
   with_items: "{{ luns_san }}"
   when:

@@ -83,7 +83,7 @@ save_ontap_facts_dir: "{{ playbook_dir }}/clusterinfo/"
 #
 #   Leave BLANK to skip task
 #
-#   This is the banner displayed AFTER a successful login and will be set for all SVMs
+#   This is the banner displayed BEFORE a login and will be set for all SVMs
 #   The cluster MOTD will be displayed
 #
 # --------------------------------------------------------------------------------------------------------------------
@@ -93,6 +93,8 @@ banner:
 # Message of the Day
 #
 #   Leave BLANK to skip task
+#
+#   This is displayed AFTER a successful login
 #
 #   The message may contain dynamically generated content using the following escape sequences:
 #
