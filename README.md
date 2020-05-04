@@ -11,22 +11,21 @@ The 'default/main.yml' is well commented, covering each var with a description, 
 The role and associated components are provided as-is and are intended to provide an example of utilizing the ONTAP collection in Ansible. Fully test in a non-production enviornment before implementing. Feel free to utilize/modify any portion of code for your specific needs.
 
 ### Requirements
-* ONTAP 9.6 or later
+* ONTAP 9.6 or later and cluster setup has been run successfully
 * Ansible 2.9.7 or later
-* NetApp Library: netapp-lib
-
-     pip3 install --upgrade netapp-lib
-
+* NetApp Library: netapp-lib (pip3 install --upgrade netapp-lib)
 * Ansible Galaxy Collection: netapp.ontap (https://galaxy.ansible.com/netapp/ontap)
 * This role copied to the desired location (ie. ~/roles or Ansible configured roles path) 
 
-* Note: The NetApp ONTAP collection includes several roles and related articles are available on netapp.io. The roles are located in '{installation_path}/collections/ansible_collections/netapp/ontap/roles'
-* Roles include:
-  * na_ontap_cluster_config
-  * na_ontap_nas_create
-  * na_ontap_san_create
-  * na_ontap_snapmirror_create
-  * na_ontap_vserver_create
+### NOTE
+**The NetApp ONTAP collection (netapp.ontap) includes several roles and there are related articles available on netapp.io. The roles are located in '{installation_path}/collections/ansible_collections/netapp/ontap/roles'.**
+
+Roles include:
+* na_ontap_cluster_config
+* na_ontap_nas_create
+* na_ontap_san_create
+* na_ontap_snapmirror_create
+* na_ontap_vserver_create
 
 ### Dev/Test Environment
 * CentOS 8.1
@@ -38,8 +37,7 @@ The role and associated components are provided as-is and are intended to provid
 
 ### Usage
 * Example: **ansible-playbook pb_ontap_config.yml -e "@vars_ontap.yml"**
-
-* Implement password security in compliance with the environment and best practices (separete vars file, ansible-vault, etc)
+* Implement password security in compliance with the environment and best practices (separate vars file, ansible-vault, etc)
 * A sample playbook and vars files are provided as a reference.
 
 ### Workflow
@@ -80,30 +78,35 @@ The role and associated components are provided as-is and are intended to provid
 35. Save configuration to file (save_ontap_info.yml)
 
 ### Example Playbook
-> ---
-> # --------------------------------------------------------------------------
-> #
-> # Pass vars filename from the command line:
-> #
-> #    Example: ansible-playbook pb_ontap_config.yml -e "@vars_ontap_select.yml"
-> #
-> # --------------------------------------------------------------------------
-> - hosts: localhost
->   connection: local
->   gather_facts: no
->   collections:
->     - netapp.ontap
-> 
->   tasks:
-> 
->   - include_role:
->       name: ontap_config
+- hosts: localhost
+  connection: local
+  gather_facts: no
+  collections:
+    - netapp.ontap
+  tasks:
+  - include_role:
+      name: ontap_config
+
+To pass a vars file to the playbook:
+
+   ansible-playbook pb_ontap_config.yml -e "@vars_ontap_select.yml"
+
+The 'tasks/main.yml' calls the required tasks based on the vars file settings
 
 ### Comments
-Development of this role is ongoing and new tasks are added regularly.  Here's a list of tasks currently being worked on:
-1. Cluster setup
-2. FC/FCoE
-3. Security-related settings (FIPs, MFA, Certificates)
-4. Cluster Identity settings
-5. QoS
-6. Snap-related functions (Snapshots, SnapMirror)
+Development of this role is ongoing and new tasks are added regularly. Some may end up as separate roles.
+
+Here's a list of tasks currently being worked on:
+* Cluster setup (URI module and ONTAP REST API)
+* Set date and time based on Ansible controller
+* Firewall settings
+* FC/FCoE
+* Security hardening (FIPs, MFA, Certificates, Encryption)
+* Cluster Identity settings
+* QoS
+* Snap-related functions (Snapshots, SnapMirror)
+* AIQ Unified Manager REST API (dynamic inventory?)
+* Storage system reset
+* Node setup (expect) prior to cluster setup (assign IPs, set admin password)
+* Excel spreadsheet as input file
+* Saved na_ontap_info JSON from existing system to build additional systems (in combination with unique settings in vars file)

@@ -60,14 +60,9 @@ disable_asup: false
 enable_cdp: false
 
 # --------------------------------------------------------------------------------------------------------------------
-# Zero Spares - Runs in the background and could take some time - potentially blocking aggregate creation until done
+# Zero Spares - Runs in the background and could potentially blocking aggregate creation until done
 # --------------------------------------------------------------------------------------------------------------------
 zero_spares: false
-
-# --------------------------------------------------------------------------------------------------------------------
-# Set Date and Time - uses the local time of the Ansible controller
-# --------------------------------------------------------------------------------------------------------------------
-# set_date_time: false
 
 # --------------------------------------------------------------------------------------------------------------------
 # Save ONTAP configuration to JSON file on Ansible controller - runs na_ontap_info at end of role
@@ -189,17 +184,6 @@ remove_ports:
 flowcontrol_none_ports: 
 
 # --------------------------------------------------------------------------------------------------------------------
-# FiberChannel Adapter Settings
-#
-#   Leave BLANK to skip task
-#
-#   fcp: 
-#     - { adapter_name: 0e, node_name: LabCluster-01, mode: fc, type: target }
-#
-# --------------------------------------------------------------------------------------------------------------------
-fcp:
-
-# --------------------------------------------------------------------------------------------------------------------
 # Interface Groups
 #
 #   Leave BLANK to skip task
@@ -238,7 +222,7 @@ broadcast_domains:
 # --------------------------------------------------------------------------------------------------------------------
 # Aggregates
 #
-#   Leave BLANK to skip task - but you really need at least one to anything else ;)
+#   Leave BLANK to skip task - but you really need at least one to do anything ;)
 #
 #   aggregates:
 #     -  { aggregate_name: aggr_data1, aggregate_node: "{{ cluster_name }}-01", aggregate_disk_count: 11, aggregate_raid_size: 11, aggregate_raid_type: raid_dp, mirrored: false }
@@ -250,14 +234,13 @@ aggregates:
 # --------------------------------------------------------------------------------------------------------------------
 # Storage Virtual Machines (SVM / vServer)
 #
-#   Leave BLANK to skip task - but you really need at least one to anything else ;)
+#   Leave BLANK to skip task - but you really need at least one to do anything ;)
 #
 #   svms:
 #     - { svm_name: svmData, svm_aggregate: aggr_data1, svm_root_vol: svmData_root, svm_protocol: iscsi } 
 #     - { svm_name: svmNFS,  svm_aggregate: aggr_data2, svm_root_vol: svmNFS_root,  svm_protocol: nfs }
 #     - { svm_name: svmCIFS, svm_aggregate: aggr_data1, svm_root_vol: svmCIFS_root, svm_protocol: cifs }
 #     - { svm_name: svmNAS,  svm_aggregate: aggr_data2, svm_root_vol: svmNAS_root,  svm_protocol: 'cifs,nfs'}
-#     - { svm_name: svmSAN,  svm_aggregate: aggr_data1, svm_root_vol: svmSAN_root,  svm_protocol: 'iscsi,fcp' } 
 #
 # --------------------------------------------------------------------------------------------------------------------
 svms:
@@ -274,15 +257,15 @@ svms:
 svm_dns:
 
 # --------------------------------------------------------------------------------------------------------------------
-# CIFS Active Directory Domain
+# CIFS Servers
 #
 #   Leave BLANK to skip task
 #
-#   cifs_domain:
+#   cifs_servers:
 #     - { svm_name: svmCIFS, domain: lab.local, cifs_server_name: svrCIFS, force: true, domain_admin_username: administrator, domain_admin_password: 'Netapp123!', ou: }
 #
 # --------------------------------------------------------------------------------------------------------------------
-cifs_ad_domain:
+cifs_servers:
 
 # --------------------------------------------------------------------------------------------------------------------
 # Intercluster LIFs
