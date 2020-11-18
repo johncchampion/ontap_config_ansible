@@ -16,6 +16,20 @@
     aggr_list: "*"
     allowed_protocols: "{{ item.svm_protocol }}"
 
+- name: ..... Disable SNMP
+
+  netapp.ontap.na_ontap_svm_options:
+
+    hostname: "{{ cluster_hostname }}"
+    username: "{{ cluster_username }}"
+    password: "{{ cluster_password }}"
+    https: true
+    validate_certs: false
+
+    vserver: "{{ current_cluster_name }}"
+    name: snmp.enable
+    value: "off"
+
 - name: ..... setup FCP
 
   netapp.ontap.na_ontap_fcp:
