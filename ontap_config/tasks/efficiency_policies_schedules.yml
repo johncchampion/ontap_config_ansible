@@ -1,0 +1,36 @@
+- name: ..... create job schedules
+
+  netapp.ontap.na_ontap_job_schedule:
+
+    hostname: "{{ cluster_hostname }}"
+    username: "{{ cluster_username }}"
+    password: "{{ cluster_password }}"
+    https: true
+    validate_certs: false
+
+    name: "{{ item.job_name }}"
+    state: present
+    job_hours: "{{ item.job_hours }}"
+    job_minutes: "{{ item.job_minutes }}"
+
+  with_items: "{{ job_schedules }}"
+
+  when:
+    - job_schedules != none
+
+- name: ..... create efficiency policies
+
+  netapp.ontap.na_ontap_command: 
+
+    hostname: "{{ cluster_hostname }}"
+    username: "{{ cluster_username }}"
+    password: "{{ cluster_password }}"
+    https: true
+    validate_certs: false
+
+    command: [ 'volume', 'efficiency', 'policy', 'create', '-vserver', '{{ cluster_name }}', '-policy', '{{ item.policy_name }}', '-type', '{{ item.type }}', '-schedule', '{{ item.schedule }}', '-qos-policy', '{{ item.qos_policy }}', '-enabled', 'true' ]
+
+  with_items: "{{ efficiency_policies }}"
+
+  when:
+    - efficiency_policies != none

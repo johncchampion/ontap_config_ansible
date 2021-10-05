@@ -1,0 +1,16 @@
+- name: ..... create iGroup "{{ item.igroup_name }}"
+
+  netapp.ontap.na_ontap_igroup:
+
+    hostname: "{{ cluster_hostname }}"
+    username: "{{ cluster_username }}"
+    password: "{{ cluster_password }}"
+    https: true
+    validate_certs: false
+
+    state: present
+    name: "{{ item.igroup_name }}"
+    vserver: "{{ item.svm_name }}"
+    initiator_group_type: "{{ item.group_type }}"
+    ostype: "{{ item.ostype }}"
+    initiator: "{{ item.initiator }}"

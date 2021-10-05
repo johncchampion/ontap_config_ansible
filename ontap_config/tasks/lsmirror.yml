@@ -1,0 +1,64 @@
+- name: ..... create destination LS Volume "{{ item.destination_volume }}"
+
+  na_ontap_volume:
+
+    hostname: "{{ cluster_hostname }}"
+    username: "{{ cluster_username }}"
+    password: "{{ cluster_password }}"
+    https: true
+    validate_certs: false
+
+    state: present
+    name: "{{ item.destination_volume }}"
+    aggregate_name: "{{ item.destination_aggregate_name }}"
+    size: "{{ (lookup('template', 'convert2bytes.j2') | int * 1.05) | round(0, 'ceil') | int }}"
+    size_unit: b
+    type: DP
+    vserver: "{{ item.destination_svm_name }}"
+    is_infinite: False
+
+- name: ..... create LS Mirror
+
+  na_ontap_snapmirror:
+
+    hostname: "{{ cluster_hostname }}"
+    username: "{{ cluster_username }}"
+    password: "{{ cluster_password }}"
+    https: true
+    validate_certs: false
+
+    state: present
+    source_volume: "{{ item.source_volume }}"
+    source_vserver: "{{ item.source_svm_name }}"
+    destination_volume: "{{ item.destination_volume }}"
+    destination_vserver: "{{ item.destination_svm_name }}"
+    relationship_type: load_sharing
+    schedule: "{{ item.schedule }}"
+
+- name: ..... initialize LS mirrors
+
+  na_ontap_command:
+
+    hostname: "{{ cluster_hostname }}"
+    username: "{{ cluster_username }}"
+    password: "{{ cluster_password }}"
+    https: true
+    validate_certs: false
+
+    command: ['snapmirror', 'initialize', '-source-path', '{{ current_cluster_name }}://{{ item.source_svm_name }}/{{ item.source_volume }}', '-destination-path', '{{ current_cluster_name }}://{{ item.destination_svm_name }}/{{ item.destination_volume }}' ]
+
+  when: item.lsupdate == "Y"
+
+- name: ..... execute LS updates
+
+  na_ontap_command:
+
+    hostname: "{{ cluster_hostname }}"
+    username: "{{ cluster_username }}"
+    password: "{{ cluster_password }}"
+    https: true
+    validate_certs: false
+
+    command: ['snapmirror', 'update-ls-set', '-source-path', '{{ current_cluster_name }}://{{ item.source_svm_name }}/{{ item.source_volume }}' ]
+
+  when: item.lsupdate == "Y"

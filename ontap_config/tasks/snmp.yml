@@ -1,0 +1,13 @@
+- name: ..... configure SNMP
+
+  netapp.ontap.na_ontap_snmp:
+
+    hostname: "{{ cluster_hostname }}"
+    username: "{{ cluster_username }}"
+    password: "{{ cluster_password }}"
+    https: true
+    validate_certs: false
+    
+    community_name: "{{ snmp_community_name }}"
+    state: present
+    access_control: 'ro'

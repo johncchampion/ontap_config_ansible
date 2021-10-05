@@ -1,0 +1,23 @@
+- name: ..... create Intercluster LIF "{{ item.ic_name }}"
+
+  netapp.ontap.na_ontap_interface:
+
+    hostname: "{{ cluster_hostname }}"
+    username: "{{ cluster_username }}"
+    password: "{{ cluster_password }}"
+    https: true
+    validate_certs: false
+
+    state: present
+    interface_name: "{{ item.ic_name }}"
+    home_port: "{{ item.home_port }}"
+    home_node: "{{ item.home_node }}"
+    role: intercluster
+    admin_status: up
+    failover_policy: local-only
+    is_auto_revert: true
+    address: "{{ item.address }}"
+    netmask: "{{ item.netmask }}"
+    vserver: "{{ cluster_name }}"
+
+  when: ic_lifs != None

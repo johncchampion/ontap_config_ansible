@@ -1,0 +1,13 @@
+- name: ...set Login Banner - {{ vserver_name }}
+
+  netapp.ontap.na_ontap_login_messages: 
+
+    hostname: "{{ cluster_hostname }}"
+    username: "{{ cluster_username }}"
+    password: "{{ cluster_password }}"
+    https: true
+    validate_certs: false
+    
+    banner: "{{ banner }}"
+    vserver: "{{ vserver_name }}"
+    use_rest: "{{ userest }}"

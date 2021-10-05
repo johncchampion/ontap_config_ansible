@@ -1,0 +1,15 @@
+- name: ..... add route "{{ item.svm_name }} - {{ item.gateway }}"
+
+  na_ontap_net_routes:
+
+    hostname: "{{ cluster_hostname }}"
+    username: "{{ cluster_username }}"
+    password: "{{ cluster_password }}"
+    https: true
+    validate_certs: false
+
+    state: present
+    vserver: "{{ item.svm_name }}"
+    destination: "{{ item.destination }}"
+    gateway: "{{ item.gateway }}"
+    metric: "{{ item.metric }}"

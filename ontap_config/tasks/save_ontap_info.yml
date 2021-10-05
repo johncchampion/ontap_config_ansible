@@ -1,0 +1,24 @@
+- name: ..... retrieve ONTAP facts
+
+  netapp.ontap.na_ontap_info:
+
+    hostname: "{{ cluster_hostname }}"
+    username: "{{ cluster_username }}"
+    password: "{{ cluster_password }}"
+    https: true
+    validate_certs: false
+    state: info
+  register: details
+
+- name: .....verify directory exists
+
+  file:
+    path: "{{ save_ontap_facts_dir }}"
+    state: directory
+
+- name: ..... save to file "{{ current_cluster_name }}.json"
+
+  copy: 
+  
+    content: "{{ details.ontap_info | to_nice_json }}"
+    dest: "{{ save_ontap_facts_dir }}{{ current_cluster_name }}.json"

@@ -1,0 +1,73 @@
+- name: ..... create export policy "{{ item.export_policy_name }}"
+
+  na_ontap_export_policy:
+
+    hostname: "{{ cluster_hostname }}"
+    username: "{{ cluster_username }}"
+    password: "{{ cluster_password }}"
+    https: true
+    validate_certs: false
+
+    state: present
+    name: "{{ item.export_policy_name }}"
+    vserver: "{{ item.svm_name }}"
+
+  when: item.protocol == "nfs"
+
+- name: ..... add rule
+
+  na_ontap_export_policy_rule:
+
+    hostname: "{{ cluster_hostname }}"
+    username: "{{ cluster_username }}"
+    password: "{{ cluster_password }}"
+    https: true
+    validate_certs: false
+
+    state: present
+    policy_name: "{{ item.export_policy_name }}"
+    vserver: "{{ item.svm_name }}"
+    client_match: "{{ item.client }}"
+    ro_rule: "{{ item.ro }}"
+    rw_rule: "{{ item.rw }}"
+    super_user_security: "{{ item.su }}"
+
+  when: item.protocol == "nfs"
+
+- name: ..... create volume "{{ item.volume_name }}"
+
+  na_ontap_volume:
+
+    hostname: "{{ cluster_hostname }}"
+    username: "{{ cluster_username }}"
+    password: "{{ cluster_password }}"
+    https: true
+    validate_certs: false
+
+    state: present
+    name: "{{ item.volume_name }}"
+    aggregate_name: "{{ item.aggregate_name }}"
+    size: "{{ lookup('template', 'convert2bytes.j2')  | int }}"
+    size_unit: b
+    policy: "{{ item.export_policy_name }}"
+    junction_path: "/{{ item.volume_name }}"
+    space_guarantee: "none"
+    vserver: "{{ item.svm_name }}"
+    efficiency_policy: "{{ omit if item.policy.lower() is search('default') else item.policy }}"
+
+- name: ..... create share
+
+  na_ontap_cifs:
+
+    hostname: "{{ cluster_hostname }}"
+    username: "{{ cluster_username }}"
+    password: "{{ cluster_password }}"
+    https: true
+    validate_certs: false
+
+    state: present
+    share_name: "{{ item.share }}"
+    path: "/{{ item.volume_name }}"
+    vserver: "{{ item.svm_name }}"
+
+  when: item.share is defined

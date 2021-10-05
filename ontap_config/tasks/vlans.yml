@@ -1,0 +1,16 @@
+- name: ..... add VLAN
+
+  netapp.ontap.na_ontap_net_vlan:
+
+    hostname: "{{ cluster_hostname }}"
+    username: "{{ cluster_username }}"
+    password: "{{ cluster_password }}"
+    https: true
+    validate_certs: false
+
+    node: "{{ outerloop.node_name }}"
+    vlanid: "{{ item.vlan_id }}"
+    parent_interface: "{{ item.vlan_port }}"
+    state: present
+
+  loop: "{{ vlans }}"
