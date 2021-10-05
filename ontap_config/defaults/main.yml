@@ -89,39 +89,6 @@ banner:
 #
 #   Leave BLANK to skip task
 #
-#   This is displayed AFTER a successful login
-#
-#   The message may contain dynamically generated content using the following escape sequences:
-#
-#   \\ - A single backlash character.
-#   \b - No output: supported for compatibility with Linux only.
-#   \C - Cluster name.
-#   \d - Current date as set on the login node.
-#   \t - Current time as set on the login node.
-#   \I - Incoming LIF IP address (prints 'console' for a console login).
-#   \l - Login device name (prints 'console' for a console login).
-#   \L - Last login for the user on any node in the cluster.
-#   \m - Machine architecture.
-#   \n - Node or data Vserver name.
-#   \N - Name of user logging in.
-#   \o - Same as \O. Provided for Linux compatibility.
-#   \O - DNS domain name of the node. Note that the output is dependent on the network configuration and may be empty.
-#   \r - Software release number.
-#   \s - Operating system name.
-#   \u - Number of active clustershell sessions on the local node. For the cluster admin: all clustershell users. For the data Vserver admin: only active sessions for that data Vserver.
-#   \U - Same as \u, but has 'user' or 'users' appended.
-#   \v - Effective cluster version string.
-#   \W - Active sessions across the cluster for the user logging in ('who').
-#
-#   A backslash followed by any other character is as entered.
-#
-#   When passing dynamic content the \ needs to be escaped in a variable (ie. \b becomes \\b)
-#    
-#   motd: "This is a restricted system subject to monitoring"
-#   motd: "Welcome \\N, today is \\d.  You are currently logged into Node/SVM; \\n.  On cluster \\C, running \\s \\r.  Your last login was \\L."
-#
-#   NOTE: You cannot insert line breaks using the API - only with the CLI
-#
 # --------------------------------------------------------------------------------------------------------------------
 motd: 
 
@@ -172,16 +139,6 @@ snmp_community_name:
 #
 # --------------------------------------------------------------------------------------------------------------------
 remove_ports: 
-
-# --------------------------------------------------------------------------------------------------------------------
-# Ports to set admin flow control to 'none'
-#
-#   Leave BLANK to skip task
-#
-#   flowcontrol_none_ports: [e0c,e0d]
-#
-# --------------------------------------------------------------------------------------------------------------------
-flowcontrol_none_ports: 
 
 # --------------------------------------------------------------------------------------------------------------------
 # Interface Groups
