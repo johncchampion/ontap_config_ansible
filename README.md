@@ -17,23 +17,14 @@ The role and associated components are provided as-is and are intended to provid
 * Ansible Galaxy Collection: netapp.ontap (https://galaxy.ansible.com/netapp/ontap)
 * This role copied to the desired location (ie. ~/roles or Ansible configured roles path) 
 
-### NOTE
-**The NetApp ONTAP collection (netapp.ontap) includes several roles and there are related articles available on netapp.io. The roles are located in '{installation_path}/collections/ansible_collections/netapp/ontap/roles'.**
-
-Roles include:
-* na_ontap_cluster_config
-* na_ontap_nas_create
-* na_ontap_san_create
-* na_ontap_snapmirror_create
-* na_ontap_vserver_create
-
 ### Dev/Test Environment
-* CentOS 8.1
-* Ansible 2.9.7
+* CentOS 8.4.2105
+* Ansible Core 2.11.5
 * netapp-lib 
-* netapp.ontap collection 20.04.1
-* FAS2552 running ONTAP v9.7
-* ONTAP Select v9.7
+* netapp.ontap collection 21.11
+* FAS2552 running ONTAP v9.8P3
+* ONTAP Select v9.8P6 & v9.9.1P2
+* vSphere 6.7 & 7.0
 
 ### Usage
 * Example: **ansible-playbook pb_ontap_config.yml -e "@vars_ontap.yml"**
@@ -56,26 +47,25 @@ Roles include:
 13. Configure cluster DNS (dns.yml)
 14. Set SNMP Community (snmp.yml)
 15. Remove specific ports from Default broadcast domain (remove_ports.yml)
-16. Set specific ports flowcontrol to 'none' (flowcontrolnone.yml)
-17. Create efficiency policies and schedules (efficiency_policies_schedules.yml)
-18. Create interface groups (igroup.yml)
-19. Add VLANs (vlans.yml)
-20. Create broadcast domains (broadcast_domain.yml)
-21. Create aggregates (aggregate.yml)
-22. Create SVMs (svm.yml)
-23. Add login banner to SVMs (loginbanner.yml)
-24. Configure DNS for each SVM (dns.yml)
-25. Create intercluster LIFs (lif.yml)
-26. Create data and/or management LIFs (lif.yml)
-27. Configure CIFS servers (cifs_server.yml)
-28. Create NAS volumes (volume_nas.yml)
-29. Create iGroups (igroup.yml)
-30. Create SAN volumes (volume_san.yml)
-31. Create and Map SAN LUNs (lun.yml)
-32. Rename nodes (rename_node.yml)
-33. Rename root aggregates (rename_root_aggr.yml)
-34. Create Load Sharing Mirrors (lsmirror.yml)
-35. Save configuration to file (save_ontap_info.yml)
+16. Create efficiency policies and schedules (efficiency_policies_schedules.yml)
+17. Create interface groups (igroup.yml)
+18. Add VLANs (vlans.yml)
+19. Create broadcast domains (broadcast_domain.yml)
+20. Create aggregates (aggregate.yml)
+21. Create SVMs (svm.yml)
+22. Add login banner to SVMs (loginbanner.yml)
+23. Configure DNS for each SVM (dns.yml)
+24. Create intercluster LIFs (lif.yml)
+25. Create data and/or management LIFs (lif.yml)
+26. Configure CIFS servers (cifs_server.yml)
+27. Create NAS volumes (volume_nas.yml)
+28. Create iGroups (igroup.yml)
+29. Create SAN volumes (volume_san.yml)
+30. Create and Map SAN LUNs (lun.yml)
+31. Rename nodes (rename_node.yml)
+32. Rename root aggregates (rename_root_aggr.yml)
+33. Create Load Sharing Mirrors (lsmirror.yml)
+34. Save configuration to file (save_ontap_info.yml)
 
 ### Example Playbook
 <pre>
@@ -94,21 +84,3 @@ To pass a vars file to the playbook:
    **ansible-playbook pb_ontap_config.yml -e "@vars_ontap_select.yml"**
 
 The 'tasks/main.yml' calls the required tasks based on the vars file settings
-
-### Comments
-Development of this role is ongoing and new tasks are added regularly. Some may end up as separate roles.
-
-Here's a list of tasks currently being worked on:
-* Cluster setup (URI module and ONTAP REST API)
-* Set date and time based on Ansible controller
-* Firewall settings
-* FC/FCoE
-* Security hardening (FIPs, MFA, Certificates, Encryption)
-* Cluster Identity settings
-* QoS
-* Snap-related functions (Snapshots, SnapMirror)
-* AIQ Unified Manager REST API (dynamic inventory?)
-* Storage system reset
-* Node setup (expect) prior to cluster setup (assign IPs, set admin password)
-* Excel spreadsheet as input file
-* Saved na_ontap_info JSON from existing system to build additional systems (in combination with unique settings in vars file)

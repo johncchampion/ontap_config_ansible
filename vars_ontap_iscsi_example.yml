@@ -19,7 +19,6 @@ motd: "\\v"
 tz: "Etc/UTC"
 license_codes: "AAAAAAAAAAAAAAAAAAAAAAAAAAAA,BBBBBBBBBBBBBBBBBBBBBBBBBBBB,CCCCCCCCCCCCCCCCCCCCCCCCCCCC,DDDDDDDDDDDDDDDDDDDDDDDDDDDD,EEEEEEEEEEEEEEEEEEEEEEEEEEEE"
 remove_ports: [e0c,e0d]
-flowcontrol_none_ports: [e0c,e0d]
 broadcast_domains:
   - { bd_name: Data, bd_mtu: 9000, bd_ports: [e0c,e0d] }
 aggregates:
