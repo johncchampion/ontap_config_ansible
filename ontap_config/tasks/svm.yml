@@ -15,6 +15,7 @@
     root_volume_security_style: "{{ 'ntfs' if item.svm_protocol.lower() is search('cifs') else 'unix' }}"
     aggr_list: "*"
     allowed_protocols: "{{ item.svm_protocol }}"
+    ignore_rest_unsupported_options: true
 
 - name: ..... Disable SNMP
 

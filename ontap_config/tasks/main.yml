@@ -51,10 +51,10 @@
 
 ##################################################################################################################
 
-- name: Z E R O  S P A R E S
-  include_tasks: zero_spares.yml
-  when:
-    - zero_spares
+#- name: Z E R O  S P A R E S
+#  include_tasks: zero_spares.yml
+#  when:
+#    - zero_spares
 
 ##################################################################################################################
 
@@ -67,9 +67,6 @@
 
 - name: L O G I N  B A N N E R - C L U S T E R
   include_tasks: loginbanner.yml
-  vars:
-    vserver_name: "{{ cluster_name }}"
-    userest: "Never"
   when:
     - banner != none
 
@@ -187,7 +184,6 @@
   include_tasks: loginbanner.yml
   vars:
     vserver_name: "{{ item.svm_name }}"
-    userest: "Auto"
   with_items: "{{ svms }}"
   when:
     - banner != none

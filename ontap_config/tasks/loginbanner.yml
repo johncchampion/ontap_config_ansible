@@ -1,4 +1,4 @@
-- name: ...set Login Banner - {{ vserver_name }}
+- name: ...set Login Banner
 
   netapp.ontap.na_ontap_login_messages: 
 
@@ -9,5 +9,4 @@
     validate_certs: false
     
     banner: "{{ banner }}"
-    vserver: "{{ vserver_name }}"
-    use_rest: "{{ userest }}"
+    vserver: "{{ vserver_name | default(omit) }}"

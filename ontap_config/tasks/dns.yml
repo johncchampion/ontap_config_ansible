@@ -12,4 +12,5 @@
     nameservers: "{{ nameservers_list }}"
     domains: "{{ domains_list }}"
     state: present
-    use_rest: Never
+    use_rest: auto
+    skip_validation: true

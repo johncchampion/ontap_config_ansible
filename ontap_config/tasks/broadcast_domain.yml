@@ -31,3 +31,4 @@
     mtu: "{{ outerloop.bd_mtu }}"
     state: present
     ports: "{{ ports_list }}"
+    ipspace: "Default"

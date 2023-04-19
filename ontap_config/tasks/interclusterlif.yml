@@ -16,6 +16,7 @@
     admin_status: up
     failover_policy: local-only
     is_auto_revert: true
+    ipspace: Default
     address: "{{ item.address }}"
     netmask: "{{ item.netmask }}"
     vserver: "{{ cluster_name }}"

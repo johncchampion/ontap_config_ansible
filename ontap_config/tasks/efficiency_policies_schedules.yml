@@ -20,7 +20,7 @@
 
 - name: ..... create efficiency policies
 
-  netapp.ontap.na_ontap_command: 
+  netapp.ontap.na_ontap_efficiency_policy:
 
     hostname: "{{ cluster_hostname }}"
     username: "{{ cluster_username }}"
@@ -28,7 +28,14 @@
     https: true
     validate_certs: false
 
-    command: [ 'volume', 'efficiency', 'policy', 'create', '-vserver', '{{ cluster_name }}', '-policy', '{{ item.policy_name }}', '-type', '{{ item.type }}', '-schedule', '{{ item.schedule }}', '-qos-policy', '{{ item.qos_policy }}', '-enabled', 'true' ]
+    state: present
+    enabled: true
+    vserver: "{{ cluster_name }}"
+    policy_name: "{{ item.policy_name}}"
+    policy_type: "{{ item.type }}"
+    schedule: "{{ item.schedule }}"
+    qos_policy: "{{ item.qos_policy }}"
+
 
   with_items: "{{ efficiency_policies }}"
 
