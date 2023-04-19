@@ -62,7 +62,7 @@ enable_cdp: false
 # --------------------------------------------------------------------------------------------------------------------
 # Zero Spares - Runs in the background and could potentially blocking aggregate creation until done
 # --------------------------------------------------------------------------------------------------------------------
-zero_spares: false
+#zero_spares: false
 
 # --------------------------------------------------------------------------------------------------------------------
 # Save ONTAP configuration to JSON file on Ansible controller - runs na_ontap_info at end of role
