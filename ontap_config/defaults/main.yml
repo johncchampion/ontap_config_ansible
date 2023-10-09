@@ -24,13 +24,13 @@ cluster_search_domains:
 #
 # - add one line for each node
 # - MUST have at least 1 node
-# - controls node renaming, root aggregate renaming, and service processor settings
+# - controls node and service processor settings
 # - primary source for looping through node names and settings 
 # - if diskcount is blank then all unassigned disks will be assigned to that node
 # 
 #   cluster_nodes:
-#     - { node_name: LabCluster-01, new_node_name: , root_aggr: aggr0_LabCluster_01", new_root_aggr: aggr_root_01, diskcount: , sp_ip: 192.168.0.13, sp_netmask: 255.255.255.0, sp_gateway: 192.168.0.1 }
-#     - { node_name: LabCluster-02, new_node_name: , root_aggr: aggr0_LabCluster_02", new_root_aggr: aggr_root_02, diskcount: , sp_ip: 192.168.0.14, sp_netmask: 255.255.255.0, sp_gateway: 192.168.0.1 }
+#     - { node_name: LabCluster-01, root_aggr: aggr0_LabCluster_01", diskcount: , sp_ip: 192.168.0.13, sp_netmask: 255.255.255.0, sp_gateway: 192.168.0.1 }
+#     - { node_name: LabCluster-02, root_aggr: aggr0_LabCluster_02", diskcount: , sp_ip: 192.168.0.14, sp_netmask: 255.255.255.0, sp_gateway: 192.168.0.1 }
 #
 # --------------------------------------------------------------------------------------------------------------------
 cluster_nodes:
@@ -58,11 +58,6 @@ disable_asup: false
 # Enable CDP on all nodes
 # --------------------------------------------------------------------------------------------------------------------
 enable_cdp: false
-
-# --------------------------------------------------------------------------------------------------------------------
-# Zero Spares - Runs in the background and could potentially blocking aggregate creation until done
-# --------------------------------------------------------------------------------------------------------------------
-#zero_spares: false
 
 # --------------------------------------------------------------------------------------------------------------------
 # Save ONTAP configuration to JSON file on Ansible controller - runs na_ontap_info at end of role
