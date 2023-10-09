@@ -61,12 +61,12 @@
     state: present
     service_state: started
     vserver: "{{ item.svm_name }}"
-    ontapi: "{{ details.ontap_info.ontap_version }}"
+#    ontapi: "{{ details.ontap_info.ontap_version }}"
 
   when: 
     - item.svm_protocol.lower() is search("iscsi")
 
-- name: ..... setup NFS (1)
+- name: ..... setup NFS
 
   netapp.ontap.na_ontap_nfs:
 
@@ -88,29 +88,6 @@
 
   when: 
     - item.svm_protocol.lower() is search("nfs")
-    - details.ontap_info.ontap_version > "120"
-
-- name: ..... setup NFS (2)
-
-  netapp.ontap.na_ontap_nfs:
-
-    hostname: "{{ cluster_hostname }}"
-    username: "{{ cluster_username }}"
-    password: "{{ cluster_password }}"
-    https: true
-    validate_certs: false
-
-    state: present
-    service_state: started
-    vserver: "{{ item.svm_name }}"
-    nfsv3: enabled
-    nfsv4: disabled
-    nfsv41: disabled
-    vstorage_state: disabled
-
-  when: 
-    - item.svm_protocol.lower() is search("nfs")
-    - details.ontap_info.ontap_version < "130"
 
 - name: ..... add rule to default export policy
 
