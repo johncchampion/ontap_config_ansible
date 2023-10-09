@@ -119,7 +119,7 @@ tz: "Etc/UTC"
 #   license_codes: "AAAAAAAAAAAAA,BBBBBBBBBBBBB,CCCCCCCCCCCCC"
 #
 # --------------------------------------------------------------------------------------------------------------------
-license_codes: "WIZFTFANXEWOGDAAAAAAAAAAAAAA,ENTLEREHJYNBBGFAAAAAAAAAAAAA"
+license_codes:
 
 # --------------------------------------------------------------------------------------------------------------------
 # SNMP
