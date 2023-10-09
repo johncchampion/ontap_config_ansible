@@ -79,7 +79,7 @@ The role and associated components are provided as-is and are intended to provid
 
 To pass a vars file to the playbook:
 
-   **ansible-playbook pb_ontap_config.yml -e "@vars_ontap_select.yml"**
+   **ansible-playbook pb_ontap_config.yml -e "@vars_example_nfs.yml"**
 
 The 'tasks/main.yml' calls the required tasks based on the vars file settings
 
