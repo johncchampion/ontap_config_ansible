@@ -28,7 +28,7 @@ The role and associated components are provided as-is and are intended to provid
 * vSphere 6.7 & 7.0
 
 ### Usage
-* Example: **ansible-playbook pb_ontap_config.yml -e "@vars_ontap.yml"**
+* Example: **ansible-playbook pb_ontap_config.yml -e "@vars_example_nfs.yml"**
 * Implement password security in compliance with the environment and best practices (separate vars file, ansible-vault, etc)
 * A sample playbook and vars files are provided as a reference.
 
@@ -84,4 +84,8 @@ To pass a vars file to the playbook:
 The 'tasks/main.yml' calls the required tasks based on the vars file settings
 
 ### Notes
-_8 October 2023_ : Removed node rename and root aggregate rename tasks.  Root aggregates are no longer visible through the REST API.
+_8 October 2023_
+* Removed node rename and root aggregate rename tasks and updated main.yml. Root aggregates are no longer visible through the REST API or Ansbile modules.
+* Updated ontap_info.yml and save_ontap_info.yml tasks to use na_ontap_rest_info (removed na_ontap_info since the module is deprecated)
+* New example vars files
+
