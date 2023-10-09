@@ -1,4 +1,4 @@
-- name: ..... retrieve ONTAP facts
+- name: ..... retrieve ONTAP Info
 
   netapp.ontap.na_ontap_rest_info:
 
