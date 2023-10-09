@@ -5,7 +5,7 @@
 #   cluster_name: "LabCluster"
 #   cluster_hostname: 192.168.0.10                                # IP address or DNS resolvable name
 #   cluster_username: admin                                       
-#   cluster_password: "Netapp123!""                               # Modify to suit local security requirements
+#   cluster_password: "clusterpasswd"                             # Modify to suit local security requirements
 #   cluster_ntp_servers: [192.168.0.253,192,168.0.254]            # Leave BLANK to skip task
 #   cluster_dns_ips: [10.0.10.2,10.0.10.3]                        # Leave BLANK to skip task
 #   cluster_search_domains: [lab.local]                           # Leave BLANK to skip task
