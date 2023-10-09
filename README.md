@@ -84,4 +84,4 @@ To pass a vars file to the playbook:
 The 'tasks/main.yml' calls the required tasks based on the vars file settings
 
 ### Notes
-_None_
+_8 October 2023_ : Removed node rename and root aggregate rename tasks.  Root aggregates are no longer visible through the REST API.
