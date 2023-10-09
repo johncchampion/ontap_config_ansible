@@ -1,5 +1,5 @@
 ### Role Configuration of ONTAP 9 with Ansible and NetApp ONTAP Collection
-_17 April 2023_
+_8 October 2023_
 
 ### Description
 This is an Ansible role for configuring a NetApp ONTAP 9.6 or later storage system using the NetApp ONTAP collection. The goal is to completely configure the system leveraging a SINGLE ROLE using a vars file to accomplish the needed tasks. Unlike many roles, the tasks/main.yml is used to invoke each task (include_task) for each step of the workflow, utilizing looping structures when required. This allows each task to be individually written, reducing complexity, and hopefully making it easier to read, modify, and maintain.
@@ -19,11 +19,11 @@ The role and associated components are provided as-is and are intended to provid
 * This role copied to the desired location (ie. ~/roles or Ansible configured roles path) 
 
 ### Dev/Test Environment
-* CentOS 8.4.2105
-* Ansible Core 2.12.1
-* Python 3.9
+* AlmaLinux 8.8
+* Ansible Core 2.15.2
+* Python 3.9.16
 * netapp-lib 2021.6.25 
-* netapp.ontap collection 22.5.0
+* netapp.ontap collection 22.7.0
 * ONTAP Select v9.12.1
 * vSphere 6.7 & 7.0
 
@@ -62,10 +62,8 @@ The role and associated components are provided as-is and are intended to provid
 27. Create iGroups (igroup.yml)
 28. Create SAN volumes (volume_san.yml)
 29. Create and Map SAN LUNs (lun.yml)
-30. Rename nodes (rename_node.yml)
-31. Rename root aggregates (rename_root_aggr.yml)
-32. Create Load Sharing Mirrors (lsmirror.yml)
-33. Save configuration to file (save_ontap_info.yml)
+30. Create Load Sharing Mirrors (lsmirror.yml)
+31. Save configuration to file (save_ontap_info.yml)
 
 ### Example Playbook
 <pre>
