@@ -1,13 +1,62 @@
 - name: ..... retrieve ONTAP facts
 
-  netapp.ontap.na_ontap_info:
+  netapp.ontap.na_ontap_rest_info:
 
     hostname: "{{ cluster_hostname }}"
     username: "{{ cluster_username }}"
     password: "{{ cluster_password }}"
     https: true
     validate_certs: false
-    state: info
+
+    gather_subset:
+      - cluster
+      - cluster/licensing/licenses
+      - cluster/nodes
+      - cluster/ntp/servers
+      - cluster/peers
+      - cluster/software
+      - cluster/web
+      - name-services/dns
+      - name-services/ldap
+      - name-services/local-hosts
+      - network/ethernet/broadcast-domains
+      - network/ethernet/ports
+      - network/ethernet/switch/ports
+      - network/ethernet/switches
+      - network/ip/interfaces
+      - network/ip/routes
+      - protocols/cifs/connections
+      - protocols/cifs/domains
+      - protocols/cifs/netbios
+      - protocols/cifs/services
+      - protocols/cifs/shares
+      - protocols/nfs/services
+      - protocols/san/igroups
+      - protocols/san/iscsi/services
+      - protocols/san/lun-maps
+      - protocols/san/portsets
+      - security
+      - security/accounts
+      - security/login/messages
+      - security/ssh
+      - storage/aggregates
+      - storage/cluster
+      - storage/disks
+      - storage/luns
+      - storage/namespaces
+      - storage/pools
+      - storage/ports
+      - storage/shelves
+      - storage/switches
+      - storage/volumes
+      - support/autosupport
+      - support/ems
+      - support/snmp
+      - svm/peers
+      - svm/svms
+
+    fields: '*'
+
   register: details
 
 - name: .....verify directory exists

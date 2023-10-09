@@ -51,13 +51,6 @@
 
 ##################################################################################################################
 
-#- name: Z E R O  S P A R E S
-#  include_tasks: zero_spares.yml
-#  when:
-#    - zero_spares
-
-##################################################################################################################
-
 - name: L I C E N S E S
   include_tasks: licenses.yml
   when:
@@ -254,31 +247,6 @@
   with_items: "{{ luns_san }}"
   when:
     - luns_san != none
-
-##################################################################################################################
-
-- name: R E N A M E  N O D E S
-  include_tasks: rename_node.yml
-  with_items: "{{ cluster_nodes }}"
-  loop_control:
-    label: "{{ item.node_name }}"
-  when: 
-    - item.new_node_name != none
-    - item.new_node_name != item.node_name
-    - item.node_name in ( node_list | map(attribute='node_name') )
-
-##################################################################################################################
-
-- name: R E N A M E  R O O T  A G G R E G A T E S
-  include_tasks: rename_root_aggr.yml
-  with_items: "{{ cluster_nodes }}"
-  loop_control:
-    label: "{{ item.root_aggr }}"
-  when:
-    - item.root_aggr != none
-    - item.new_root_aggr != none
-    - item.new_root_aggr != item.root_aggr
-    - item.root_aggr in ( root_aggr_list | map(attribute='root_aggr') )
 
 ##################################################################################################################
 
