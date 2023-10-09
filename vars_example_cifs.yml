@@ -1,0 +1,49 @@
+---
+cluster_name: ots3
+cluster_hostname: 10.0.0.230
+cluster_username: admin
+cluster_password: 
+cluster_ntp_servers: [216.239.35.0,216.239.35.4,216.239.35.8,216.239.35.12]
+cluster_dns_ips: [10.0.0.203]
+cluster_search_domains: [ntap.local]
+cluster_nodes:
+  - { node_name: "{{ cluster_name }}-01", root_aggr: "aggr_{{ cluster_name }}_01", new_root_aggr: , diskcount: , sp_ip: , sp_netmask: , sp_gateway: }
+assign_disks: false
+enable_ha: false
+disable_asup: true
+enable_cdp: true
+save_ontap_facts: true
+save_ontap_facts_dir: "{{ playbook_dir }}/clusterinfo/"
+banner: "You are accessing a U.S. Government (USG) Information System (IS) that is provided for USG-authorized use only. By using this IS (which includes any device attached to this IS), you consent to the following conditions: -The USG routinely intercepts and monitors communications on this IS for purposes including, but not limited to, penetration testing, COMSEC monitoring, network operations and defense, personnel misconduct (PM), law enforcement (LE), and counterintelligence (CI) investigations. -At any time, the USG may inspect and seize data stored on this IS. -Communications using, or data stored on, this IS are not private, are subject to routine monitoring, interception, and search, and may be disclosed or used for any USG-authorized purpose. -This IS includes security measures (e.g., authentication and access controls) to protect USG interests--not for your personal benefit or privacy. -Notwithstanding the above, using this IS does not constitute consent to PM, LE or CI investigative searching or monitoring of the content of privileged communications, or work product, related to personal representation or services by attorneys, psychotherapists, or clergy, and their assistants. Such communications and work product are private and confidential. See User Agreement for details."
+motd: "\\v"
+tz: "Etc/UTC"
+license_codes: "WIZFTFANXEWOGDAAAAAAAAAAAAAA,ENTLEREHJYNBBGFAAAAAAAAAAAAA"
+snmp_community_name: 
+remove_ports: 
+ifgroups:
+vlans:
+broadcast_domains:
+  - { bd_name: bdData, bd_mtu: 1500, bd_ports: [e0b,e0c] }
+aggregates:
+  -  { aggregate_name: aggr_data1, aggregate_node: "{{ cluster_name }}-01", aggregate_disk_count: 1, aggregate_raid_size: 8, aggregate_raid_type: raid0, mirrored: false }
+svms:
+  - { svm_name: svmCIFS, svm_aggregate: aggr_data1, svm_root_vol: svmCIFS_root, svm_protocol: cifs }
+svm_dns:
+  - { svm_name: svmCIFS, dns_domains: ntap.local, dns_nameservers: 10.0.0.203 }
+cifs_servers:
+  - { svm_name: svmCIFS, domain: ntap.local, cifs_server_name: NTAPCIFS, force: true, domain_admin_username: administrator, domain_admin_password: 'domainpw', ou: }
+ic_lifs:
+  - { ic_name: ic_1, address: 10.0.0.232, netmask: 255.255.255.0, home_node: "{{ cluster_name }}-01", home_port: e0a }
+lifs:
+  - { lif_name: lif_svmCIFS_lif_1, svm_name: svmCIFS, home_node: "{{ cluster_name }}-01", home_port: "e0b", protocol: cifs, address: 10.0.0.233, netmask: 255.255.255.0 }
+routes:
+  - { svm_name: svmCIFS,   destination: "0.0.0.0/0", gateway: 10.0.0.1, metric: 20 }
+job_schedules:
+efficiency_policies:
+initiators: 
+igroups:
+volumes_nas:
+  - { volume_name: vol_cifs1, svm_name: svmCIFS, size: 300, size_unit: gb, aggregate_name: aggr_data1, protocol: cifs, share: cifs_share1 }
+volumes_san:
+luns_san:
+ls_mirrors:
