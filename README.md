@@ -84,6 +84,10 @@ To pass a vars file to the playbook:
 The 'tasks/main.yml' calls the required tasks based on the vars file settings
 
 ### Notes
+_30 October 2023_
+* Removed 'lun_list' from ontap_info.yml - no longer needed
+* Removed 'when' conditions from lun.yml
+* Added 'use_python_keys: true' to save_ontap_info.yml
 _8 October 2023_
 * Removed node rename and root aggregate rename tasks and updated main.yml. Root aggregates are no longer visible through the REST API or Ansbile modules.
 * Updated ontap_info.yml and save_ontap_info.yml tasks to use na_ontap_rest_info (removed na_ontap_info since the module is deprecated)
