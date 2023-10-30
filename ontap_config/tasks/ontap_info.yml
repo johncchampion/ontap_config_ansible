@@ -32,10 +32,3 @@
   loop_control:
     label: "{{ item.name}}"
 
-- name: ..... retrieve LUNs
-
-  set_fact: 
-    lun_list: "{{ lun_list | default([]) + [ { 'lun_path': item.name} ] }}"
-  with_items: "{{ details.ontap_info.storage_luns.records }}"
-  loop_control:
-    label: "{{ item.name}}"
