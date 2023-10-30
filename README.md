@@ -1,5 +1,5 @@
 ### Role Configuration of ONTAP 9 with Ansible and NetApp ONTAP Collection
-_8 October 2023_
+_30 October 2023_
 
 ### Description
 This is an Ansible role for configuring a NetApp ONTAP 9.6 or later storage system using the NetApp ONTAP collection. The goal is to completely configure the system leveraging a SINGLE ROLE using a vars file to accomplish the needed tasks. Unlike many roles, the tasks/main.yml is used to invoke each task (include_task) for each step of the workflow, utilizing looping structures when required. This allows each task to be individually written, reducing complexity, and hopefully making it easier to read, modify, and maintain.
