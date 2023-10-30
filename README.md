@@ -33,7 +33,7 @@ The role and associated components are provided as-is and are intended to provid
 * A sample playbook and vars files are provided as a reference.
 
 ### Workflow
-1. Gather existing cluster information (ontapinfo.yml)
+1. Gather existing cluster information (ontap_info.yml)
 2. Configure service processors (service_processor.yml)
 3. Assign unowned disks to node(s) (assign_disks.yml)
 4. Enable Cluster High Availability (ha_enable.yml)
