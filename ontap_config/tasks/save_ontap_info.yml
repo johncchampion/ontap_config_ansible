@@ -1,4 +1,4 @@
-- name: ..... retrieve ONTAP Info
+- name: ..... retrieve ONTAP facts
 
   netapp.ontap.na_ontap_rest_info:
 
@@ -7,6 +7,8 @@
     password: "{{ cluster_password }}"
     https: true
     validate_certs: false
+    
+    use_python_keys: true
 
     gather_subset:
       - cluster
