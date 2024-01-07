@@ -84,6 +84,10 @@ To pass a vars file to the playbook:
 The 'tasks/main.yml' calls the required tasks based on the vars file settings
 
 ### Notes
+
+_7 January 2024_
+* Added 'no_log: true' for the cifs_server task in main.yml to ensure the domain admin password is not displayed or logged
+
 _30 October 2023_
 * Removed 'lun_list' from ontap_info.yml - no longer needed
 * Removed 'when' conditions from lun.yml
