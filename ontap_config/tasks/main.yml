@@ -215,6 +215,7 @@
   include_tasks: cifs_server.yml
   with_items: "{{ cifs_servers }}"
   when: cifs_servers != none
+  no_log: true
 
 ##################################################################################################################
 
